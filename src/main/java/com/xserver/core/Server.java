@@ -49,14 +49,13 @@ public class Server {
   }
 
   private void process(Socket socket) throws IOException {
+    Request request = null;
     Response response;
-    Request request;
     try {
       request = RequestParser.getParser(socket).parse();
       response = RequestDispatcher.getDispatcher(handlers, request).dispatch();
     } catch (XServerException error) {
       response = error;
-      request = null;
     }
     ResponseWriter.getWriter(socket, request).write(response);
 
